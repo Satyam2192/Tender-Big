@@ -4,12 +4,28 @@ import { setKeywords } from "../Redux/store";
 import Home2 from "./Home2";
 import Home3 from "./Home3";
 import Home4 from "./Home4";
-import { NavLink, useNavigate } from "react-router-dom";
-import Navbar from "../components/Navbar";
 import { Link } from "react-router-dom";
-import Footer from "../components/Footer";
+import { Dialog } from '@headlessui/react'
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  
+  const [name, setName] = useState("");
+  const [company, setCompany] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [email, setEmail] = useState("");
+  const [selectedService, setSelectedService] = useState("");
+  const [isOpen, setIsOpen] = useState(true)
+  
+  // useEffect(() => {
+  //   setIsOpen(!isOpen)
+  // }, [])
+
+  setTimeout(() => {
+    setIsOpen(true)
+  }, 50000)
+ 
+  const handleOpen = () => setIsOpen(!isOpen);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [searchKeywords, setSearchKeywords] = useState("");
@@ -47,9 +63,52 @@ const HomePage = () => {
     };
   }, []);
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    sendDataToAPI(selectedService);
+    setName("");
+    setCompany("");
+    setMobile("");
+    setEmail("");
+    setSelectedService("");
+  };
+
+  const sendDataToAPI = (selectedService) => {
+    const formData = {
+      name,
+      company,
+      mobile,
+      email,
+      selectedService,
+    };
+    const token = localStorage.getItem('token');
+    axios
+      .post("/apiTender/post-contactform", formData, {
+        headers: {
+          'auth': token
+        }
+      })
+      .then((response) => {
+        alert("We will contact you soon!!!")
+      })
+      .catch((error) => {
+        console.error("Error sending form data:", error);
+        alert("Oops something went wrong!!!")
+      });
+  };
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const selectedServiceFromNavbar = queryParams.get("service");
+
+  const handleServiceChange = (e) => {
+    setSelectedService(e.target.value);
+  };
+
+
   return (
     <>
-      <div className="px-3 md:p-4 ">
+      <div className="relative px-3 md:p-4">
         <div className="flex flex-col justify-center max-w-[78rem] mx-auto md:flex-row ">
           {isSmallScreen ? (
             <div className="w-full mt-2 md:w-1/4 sm:grid">
@@ -141,11 +200,151 @@ const HomePage = () => {
           </div>
         </div>
         <hr />
+
+        
+          <Dialog
+            open={isOpen}
+            onClose={() => setIsOpen(false)}
+            className="relative z-50"
+          >
+            {/* The backdrop, rendered as a fixed sibling to the panel container */}
+            <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+
+            {/* Full-screen container to center the panel */}
+            <div className="fixed inset-0 flex items-center justify-center p-4">
+              {/* The actual dialog panel  */}
+              <Dialog.Panel className="grid grid-cols-2 p-8 bg-white rounded gap-x-8">
+                  
+                <div className="">
+                <ul className="">
+                <h1 className="mb-5 text-3xl font-bold text-black text-gray-700">Our Services</h1>
+                <div className="px-2 mt-6 mb-6">
+                  {navigationButtons.map((button) => (
+                    <NavLink to={button.link}>
+                      <div className="w-full px-8 py-3 mb-4 text-[18px] text-center text-white font-bold  border-black border-[1px] bg-red-700 focus:none  hover:text-white linear duration-300 shadow-md rounded cursor-pointer">
+                        {button.name}
+                      </div>
+                    </NavLink>
+                  ))}
+                </div>
+              </ul>
+                </div>
+                
+                <div className="">
+                  <div className='mb-5 text-3xl font-bold text-black'>Enter Details</div>
+
+
+                  <form onSubmit={handleFormSubmit}>
+                    <div className="mb-4">
+                      <label className="block mb-2 font-semibold">
+                        Name
+                        <span className="relative top-0 right-0 text-red-700">*</span>
+                        <input required
+                          type="text"
+                          name="name"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          className="w-full px-3 py-2 mt-1 text-black bg-gray-100 border rounded-sm focus:border-red-700 focus:ring-2 focus:ring-red-700 focus:outline-none"
+                          placeholder="Enter Name" />
+                      </label>
+                    </div>
+
+                    <div className="mb-4">
+                      <label className="block mb-2 font-semibold">
+                        Email
+                        <input
+                          className="w-full px-3 py-2 mt-1 text-black bg-gray-100 border rounded-sm focus:border-red-700 focus:ring-2 focus:ring-red-700 focus:outline-none"
+                          type="email"
+                          id="email"
+                          name="email"
+                          value={email}
+                          placeholder="Enter Email"
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
+                      </label>
+                    </div>
+
+                    <div className="mb-4">
+                      <label className="block mb-2 font-semibold">
+                        Company
+                        <input
+                          className="w-full px-3 py-2 mt-1 text-black bg-gray-100 border rounded-sm focus:border-red-700 focus:ring-2 focus:ring-red-700 focus:outline-none"
+                          type="text"
+                          id="company"
+                          name="company"
+                          value={company}
+                          placeholder="Enter Company Name"
+                          onChange={(e) => setCompany(e.target.value)}
+                        />
+                      </label>
+                    </div>
+
+                    <div className="mb-4">
+                      <label className="block mb-2 font-semibold">
+                        Contact Number
+                        <input
+                          className="w-full px-3 py-2 mt-1 text-black bg-gray-100 border rounded-sm focus:border-red-700 focus:ring-2 focus:ring-red-700 focus:outline-none"
+                          type="number"
+                          id="mobile"
+                          name="mobile"
+                          value={mobile}
+                          placeholder="Enter Number"
+                          onChange={(e) => setMobile(e.target.value)}
+                        />
+                      </label>
+                    </div>
+
+                    <div className="mb-4">
+                      <label className="block mb-1 font-semibold">
+                        Select Services
+                      </label>
+                      <select required
+                        id="services"
+                        className="w-full px-3 py-2 text-black bg-gray-100 border rounded-sm focus:border-red-700 focus:ring-2 focus:ring-red-700 focus:outline-none"
+                        value={selectedService || selectedServiceFromNavbar}
+                        onChange={handleServiceChange}
+                      >
+                        <option value="">Select Service</option>
+                        <option value="Career&ManPower">Career & Man Power</option>
+                        <option value="Registration/Certificate">Registration/Certificate</option>
+                        <option value="Joint Venture">License</option>
+                        <option value="Auction Material">Auction Material</option>
+                        <option value="Joint Venture">Joint Venture</option>
+                        <option value="Tender Result">Online Bidding</option>
+                        <option value="Tender Result">Tender Result</option>
+                      </select>
+                    </div>
+                    
+
+                
+
+                    <div className="flex items-center justify-between">
+                      <button
+                        className="w-full px-4 py-3 font-bold text-white bg-red-700 rounded hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500"
+                        type="submit"
+                      >
+                        Get In Touch
+                      </button>
+                    </div>
+                  </form>
+
+                </div>
+              </Dialog.Panel>
+            </div>
+          </Dialog>
+        
       </div>
+
+      {/* <div className="absolute ">
+        Dailog
+      </div> */}
+      
       <Home2 />
       <Home3 />
       <Home4 />
-    </>
+      
+    
+    </> 
   );
 };
 

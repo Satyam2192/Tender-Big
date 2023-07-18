@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {regionData, geopoliticalData} from "../constants/countriesData.js";
 import { useNavigate } from "react-router-dom";
+import GemsImg from '../Admin/images/gems-hero.jpg'
+import { fundingAgencies, tenderBysectorProducts } from "./TenderListingPage.jsx";
 
 const TenderCard = ({ title, deadline, location, referenceNo, tenderId}) => {
   const navigate = useNavigate();
@@ -197,11 +199,196 @@ const GemListing = () => {
   return (
     <>
       <div className="p-4 mx-auto max-w-7xl">
-            <h1 className="my-4 text-2xl font-bold">
-              Gem Tenders
+            <h1 className="my-4 text-3xl font-bold text-center">
+              About Gems 
             </h1>
-        <div className="flex flex-col-reverse gap-4 md:grid sm:grid-cols-2 md:grid-cols-3">
-          <div className="sm:col-span-2 md:col-span-2">
+
+        <div className="grid grid-cols-3 gap-8">
+
+
+        <div className="col-span-1">
+            <div className="">
+              <h2 className="mb-2 text-lg font-bold">Filter Tenders</h2>
+              <div className="mb-4 border-[2px] border-black/20 shadow-xl">
+                <label
+                  htmlFor="region"
+                  className="block text-xl font-bold text-gray-700 mb-0.5 px-4 py-3 text-white bg-black"
+                >
+                  Region
+                </label>
+                <select
+                  id="region"
+                  name="region"
+                  size={5}
+                  value={selectedRegion}
+                  onChange={handleRegionChange}
+                  className="w-full px-4 py-2 bg-white"
+                >
+                  <option value="" className="text-lg px-4 py-1 mb-0.5 checked:text-white checked:shadow-[0_0_10px_100px_#b91c1c_inset] hover:shadow-[0_0_10px_100px_#b91c1c_inset] hover:text-white">All Regions</option>
+                  {Object.keys(regionData).map((region) => (
+                    <option className="py-1 mb-0.5 px-4 text-lg checked:text-white checked:shadow-[0_0_10px_100px_#b91c1c_inset] hover:shadow-[0_0_10px_100px_#b91c1c_inset] hover:text-white" key={region} value={region}>
+                      {region}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="mb-4 border-[2px] border-black/20 shadow-xl mt-8">
+                <label
+                  htmlFor="country"
+                  className="block text-xl font-bold text-gray-700 mb-0.5 px-4 py-3 text-white bg-black"
+                >
+                  Country
+                </label>
+                <select
+                  id="country"
+                  name="country"
+                  size={5}
+                  value={selectedCountry}
+                  onChange={handleCountryChange}
+                  className="w-full px-4 py-2 bg-white"
+                >
+                  <option value="" className="text-lg px-4 py-1 mb-0.5 checked:text-white checked:shadow-[0_0_10px_100px_#b91c1c_inset] hover:shadow-[0_0_10px_100px_#b91c1c_inset] hover:text-white">All Countries</option>
+                  {countries.map((country) => (
+                    <option className="py-1 mb-0.5 px-4 text-lg checked:text-white checked:shadow-[0_0_10px_100px_#b91c1c_inset] hover:shadow-[0_0_10px_100px_#b91c1c_inset] hover:text-white" key={country} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="mb-4 border-[2px] border-black/20 shadow-xl mt-8">
+                <label
+                  htmlFor="fundingAgency"
+                  className="block text-xl font-bold text-gray-700 mb-0.5 px-4 py-3 text-white bg-black"
+                >
+                  Funding Agency
+                </label>
+                <select
+                  id="fundingAgency"
+                  name="fundingAgency"
+                  size={5}
+                  value={selectedFundingAgency}
+                  onChange={handleFundingAgencyChange}
+                  className="w-full px-4 py-2 bg-white"
+                >
+                  <option value="" className="text-lg px-4 py-1 mb-0.5 checked:text-white checked:shadow-[0_0_10px_100px_#b91c1c_inset] hover:shadow-[0_0_10px_100px_#b91c1c_inset] hover:text-white">All Funding Agencies</option>
+                  {fundingAgencies.map((agency) => (
+                    <option className="py-1 mb-0.5 px-4 text-lg checked:text-white checked:shadow-[0_0_10px_100px_#b91c1c_inset] hover:shadow-[0_0_10px_100px_#b91c1c_inset] hover:text-white" key={agency.name} value={agency.value}>
+                      {agency.name}
+                    </option>
+                  ))}
+                  {/* <option value="Abu Dhabi Fund for Development (ADFD)">
+                    Abu Dhabi Fund for Development (ADFD) Tenders
+                  </option>
+                  <option value="Agence Francaise De Development (AFD)">
+                    Agence Francaise De Development (AFD) Tenders
+                  </option>
+                  <option value="Asian Development Bank (ADB)">
+                    Asian Development Bank (ADB) Tenders
+                  </option>
+                  <option value="Caribbean Development Bank (CDB)">
+                    Caribbean Development Bank (CDB) Tenders
+                  </option>
+                  <option value="European Commission">
+                    European Commission Tenders
+                  </option>
+                  <option value="Inter-American Development Bank">
+                    Inter-American Development Bank Tenders
+                  </option>
+                  <option value="Islamic Development Bank (ISDB)">
+                    Islamic Development Bank (ISDB) Tenders
+                  </option>
+                  <option value="World Bank (WB)">World Bank (WB) Tenders</option>
+                  <option value="World Health Organization (WHO)">
+                    {" "}
+                    World Health Organization (WHO) Tenders
+                  </option> */}
+
+                  {/* Add more funding agencies */}
+                </select>
+              </div>
+
+              <div className="mb-4 border-[2px] border-black/20 shadow-xl mt-8">
+                <label
+                  htmlFor="product"
+                  className="block text-xl font-bold text-gray-700 mb-0.5 px-4 py-3 text-white bg-black"
+                >
+                  Tenders By Geo-Political Region
+                </label>
+                <select
+                  id="product"
+                  name="product"
+                  size={5}
+                  value={selectedGeoPolitical}
+                  onChange={handleGeoPoliticalChange}
+                  className="w-full px-4 py-2 bg-white"
+                >
+                  <option value="" className="text-lg px-4 py-1 mb-0.5 checked:text-white checked:shadow-[0_0_10px_100px_#b91c1c_inset] hover:shadow-[0_0_10px_100px_#b91c1c_inset] hover:text-white">All Geo-Political Region</option>
+                  {Object.keys(geopoliticalData).map((key) => (
+                    <option className="py-1 mb-0.5 px-4 text-lg checked:text-white checked:shadow-[0_0_10px_100px_#b91c1c_inset] hover:shadow-[0_0_10px_100px_#b91c1c_inset] hover:text-white" key={key} value={key}>
+                      {key} Tenders
+                    </option>
+                  ))}
+                </select>
+
+              </div>
+              <div className="mb-4 border-[2px] border-black/20 shadow-xl mt-8">
+                <label
+                  htmlFor="product"
+                  className="block text-xl font-bold text-gray-700 mb-0.5 px-4 py-3 text-white bg-black"
+                >
+                  Tenders By Sector
+                </label>
+                <select
+                  id="product"
+                  name="product"
+                  size={5}
+                  value={selectedProduct}
+                  onChange={handleProductChange}
+                  className="w-full px-4 py-2 bg-white"
+                >
+                  <option value="" className="text-lg px-4 py-1 mb-0.5 checked:text-white checked:shadow-[0_0_10px_100px_#b91c1c_inset] hover:shadow-[0_0_10px_100px_#b91c1c_inset] hover:text-white">All Products</option>
+                  {tenderBysectorProducts.map((tenderBySectorProductObj) => (
+                    <option className="py-1 mb-0.5 px-4 text-lg checked:text-white checked:shadow-[0_0_10px_100px_#b91c1c_inset] hover:shadow-[0_0_10px_100px_#b91c1c_inset] hover:text-white" key={tenderBySectorProductObj.name} value={tenderBySectorProductObj.value}>
+                      {tenderBySectorProductObj.name}
+                    </option>
+                  ))}
+                  {/* <option value="Rehabilitation">Rehabilitation Tenders</option>
+                  <option value="Medical Equipment">
+                    Medical Equipment Tenders
+                  </option>
+                  <option value="Bank">Bank Tenders</option>
+                  <option value="Cleaning">Cleaning Tenders</option>
+                  <option value="Construction">Construction Tenders</option>
+                  <option value="Defence">Defence Tenders</option>
+                  <option value="Electrical">Electrical Tenders</option>
+                  <option value="Security">Security Tenders</option>
+                  <option value="Transport">Transport Tenders</option>
+                  <option value="Airport">Airport Tenders</option>
+                  <option value="CCTV">CCTV Tenders</option>
+                  <option value="Education">Education Tenders</option>
+                  <option value="Energy">Energy Tenders</option>
+                  <option value="Healthcare">Healthcare Tenders</option>
+                  <option value="HR">HR Tenders</option>
+                  <option value="Insurance">Insurance Tenders</option>
+                  <option value="IT">IT Tenders</option>
+                  <option value="Medical">Medical Tenders</option>
+                  <option value="Mining">Mining Tenders</option>
+                  <option value="Oil And Gas">Oil And Gas Tenders</option>
+                  <option value="Printing">Printing Tenders</option>
+                  <option value="Solar">Solar Tenders</option>
+                  <option value="Sports">Sports Tenders</option>
+                  <option value="Telecom">Telecom Tenders</option>
+                  <option value="Tourism">Tourism Tenders</option>
+                  <option value="Training">Training Tenders</option> */}
+                </select>
+              </div>
+              
+            </div>
+          </div>
+
+          <div className="col-span-2">
             {currentItems.length > 0 ? (
               <div>
                 {currentItems.map((tender, index) => (
@@ -248,176 +435,11 @@ const GemListing = () => {
                 </div>
               </div>
             ) : (
-              <p>No tenders found.</p>
+              <p>No gems found.</p>
             )}
           </div>
 
-          <div className="">
-            <div className="p-4 border border-gray-300 rounded border-[2px] border-black/20 shadow-lg">
-              <h2 className="mb-2 text-lg font-bold">Filter Tenders</h2>
-              <div className="mb-4">
-                <label
-                  htmlFor="region"
-                  className="block text-sm font-medium text-gray-700 mb-0.5"
-                >
-                  Region
-                </label>
-                <select
-                  id="region"
-                  name="region"
-                  value={selectedRegion}
-                  onChange={handleRegionChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-700"
-                >
-                  <option value="">All Regions</option>
-                  {Object.keys(regionData).map((region) => (
-                    <option key={region} value={region}>
-                      {region}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="mb-4">
-                <label
-                  htmlFor="country"
-                  className="block text-sm font-medium text-gray-700 mb-0.5"
-                >
-                  Country
-                </label>
-                <select
-                  id="country"
-                  name="country"
-                  value={selectedCountry}
-                  onChange={handleCountryChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-700"
-                >
-                  <option value="">All Countries</option>
-                  {countries.map((country) => (
-                    <option key={country} value={country}>
-                      {country}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="mb-4">
-                <label
-                  htmlFor="fundingAgency"
-                  className="block text-sm font-medium text-gray-700 mb-0.5"
-                >
-                  Funding Agency
-                </label>
-                <select
-                  id="fundingAgency"
-                  name="fundingAgency"
-                  value={selectedFundingAgency}
-                  onChange={handleFundingAgencyChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-700"
-                >
-                  <option value="">All Funding Agencies</option>
-                  <option value="Abu Dhabi Fund for Development (ADFD)">
-                    Abu Dhabi Fund for Development (ADFD) Tenders
-                  </option>
-                  <option value="Agence Francaise De Development (AFD)">
-                    Agence Francaise De Development (AFD) Tenders
-                  </option>
-                  <option value="Asian Development Bank (ADB)">
-                    Asian Development Bank (ADB) Tenders
-                  </option>
-                  <option value="Caribbean Development Bank (CDB)">
-                    Caribbean Development Bank (CDB) Tenders
-                  </option>
-                  <option value="European Commission">
-                    European Commission Tenders
-                  </option>
-                  <option value="Inter-American Development Bank">
-                    Inter-American Development Bank Tenders
-                  </option>
-                  <option value="Islamic Development Bank (ISDB)">
-                    Islamic Development Bank (ISDB) Tenders
-                  </option>
-                  <option value="World Bank (WB)">World Bank (WB) Tenders</option>
-                  <option value="World Health Organization (WHO)">
-                    {" "}
-                    World Health Organization (WHO) Tenders
-                  </option>
-
-                  {/* Add more funding agencies */}
-                </select>
-              </div>
-
-              <div className="mb-4">
-                <label
-                  htmlFor="product"
-                  className="block text-sm font-medium text-gray-700 mb-0.5"
-                >
-                  Tenders By Geo-Political Region
-                </label>
-                <select
-                  id="product"
-                  name="product"
-                  value={selectedGeoPolitical}
-                  onChange={handleGeoPoliticalChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-700"
-                >
-                  <option value="">All Geo-Political Region</option>
-                  {Object.keys(geopoliticalData).map((key) => (
-                    <option key={key} value={key}>
-                      {key} Tenders
-                    </option>
-                  ))}
-                </select>
-
-              </div>
-              <div className="mb-4">
-                <label
-                  htmlFor="product"
-                  className="block text-sm font-medium text-gray-700 mb-0.5"
-                >
-                  Tenders By Sector
-                </label>
-                <select
-                  id="product"
-                  name="product"
-                  value={selectedProduct}
-                  onChange={handleProductChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-700"
-                >
-                  <option value="">All Products</option>
-                  <option value="Rehabilitation">Rehabilitation Tenders</option>
-                  <option value="Medical Equipment">
-                    Medical Equipment Tenders
-                  </option>
-                  <option value="Bank">Bank Tenders</option>
-                  <option value="Cleaning">Cleaning Tenders</option>
-                  <option value="Construction">Construction Tenders</option>
-                  <option value="Defence">Defence Tenders</option>
-                  <option value="Electrical">Electrical Tenders</option>
-                  <option value="Security">Security Tenders</option>
-                  <option value="Transport">Transport Tenders</option>
-                  <option value="Airport">Airport Tenders</option>
-                  <option value="CCTV">CCTV Tenders</option>
-                  <option value="Education">Education Tenders</option>
-                  <option value="Energy">Energy Tenders</option>
-                  <option value="Healthcare">Healthcare Tenders</option>
-                  <option value="HR">HR Tenders</option>
-                  <option value="Insurance">Insurance Tenders</option>
-                  <option value="IT">IT Tenders</option>
-                  <option value="Medical">Medical Tenders</option>
-                  <option value="Mining">Mining Tenders</option>
-                  <option value="Oil And Gas">Oil And Gas Tenders</option>
-                  <option value="Printing">Printing Tenders</option>
-                  <option value="Solar">Solar Tenders</option>
-                  <option value="Sports">Sports Tenders</option>
-                  <option value="Telecom">Telecom Tenders</option>
-                  <option value="Tourism">Tourism Tenders</option>
-                  <option value="Training">Training Tenders</option>
-                </select>
-              </div>
-              
-            </div>
-          </div>
+          
         </div>
       </div>
     </>
